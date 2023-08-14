@@ -14,3 +14,16 @@ datasource db {
   // make sure to append ?connect_timeout=10 to the connection string
   // shadowDatabaseUrl = env(“SHADOW_DATABASE_URL”)
 }
+
+model Package {
+  id      Int      @id @default(autoincrement())
+  name    String
+  featues String[]
+  cost    Int
+}
+
+model Faq {
+  id       Int    @id @default(autoincrement())
+  question String
+  answer   String
+}

@@ -17,7 +17,7 @@ datasource db {
 
 model Package {
   id      Int      @id @default(autoincrement())
-  name    String
+  title   String
   featues String[]
   cost    Int
 }
@@ -26,4 +26,17 @@ model Faq {
   id       Int    @id @default(autoincrement())
   question String
   answer   String
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  user_type UserType
+}
+
+enum UserType {
+  ADMIN
+  ClIENT
+  BUSIINESS
 }

@@ -1,9 +1,16 @@
 import { Exclude } from 'class-transformer';
+import {
+  IsString,
+  IsNotEmpty,
+  IsPositive,
+  IsNumber,
+  IsArray,
+} from 'class-validator';
 
 export class FeaturesResponseDto {
   id: number;
   name: string;
-  features: string[];
+  featues: string[];
   cost: number;
 
   @Exclude()
@@ -14,4 +21,17 @@ export class FeaturesResponseDto {
   constructor(partial: Partial<FeaturesResponseDto>) {
     Object.assign(this, partial);
   }
+}
+
+export class CreateFeatureDto {
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @IsArray()
+  featues: string[];
+
+  @IsNumber()
+  @IsPositive()
+  cost: number;
 }

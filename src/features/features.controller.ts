@@ -1,6 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { FeaturesService } from './features.service';
-import { FeaturesResponseDto } from './dtos/features.dto';
+import { CreateFeatureDto, FeaturesResponseDto } from './dtos/features.dto';
 
 @Controller('features')
 export class FeaturesController {
@@ -9,5 +9,10 @@ export class FeaturesController {
   @Get()
   getFeatures(): Promise<FeaturesResponseDto[]> {
     return this.featuresService.getFeatures();
+  }
+
+  @Post('')
+  createHome(@Body() body: CreateFeatureDto) {
+    return this.featuresService.createFeature(body);
   }
 }

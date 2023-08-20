@@ -12,7 +12,7 @@ export class FeaturesController {
   }
 
   @Post('')
-  createHome(@Body() body: CreateFeatureDto) {
+  createFeature(@Body() body: CreateFeatureDto) {
     return this.featuresService.createFeature(body);
   }
 }

@@ -11,5 +11,12 @@ export class RegisterDto {
   @IsString()
   //   @MinLength(5) --> if length restriction needed
   password: string;
-  //   user_type: string;
+}
+export class LoginDto {
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  //   @MinLength(5) --> if length restriction needed
+  password: string;
 }

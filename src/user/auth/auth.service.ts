@@ -1,5 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import * as bcrypt from 'bcryptjs';
 
 interface RegisterParams {
   name: string;
@@ -21,5 +22,7 @@ export class AuthService {
     if (userExists) {
       throw new ConflictException();
     }
+    //hashing password
+    const hashedPassword = await bcrypt.hash(password, 10);
   }
 }

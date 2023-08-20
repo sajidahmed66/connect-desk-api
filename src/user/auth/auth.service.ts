@@ -1,6 +1,8 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcryptjs';
+import { UserType } from '@prisma/client';
+import * as jwt from 'jsonwebtoken';
 
 interface RegisterParams {
   name: string;
@@ -24,5 +26,29 @@ export class AuthService {
     }
     //hashing password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await this.prismaService.user.create({
+      data: {
+        email,
+        name,
+        password: hashedPassword,
+        user_type: UserType.ADMIN,
+      },
+    });
+
+    return this.generateToken(user.name, user.id);
+  }
+
+  private generateToken(name: string, id: number) {
+    return jwt.sign(
+      {
+        name,
+        id,
+      },
+      process.env.JSON_TOKEN_KEY,
+      {
+        expiresIn: 360000000,
+      },
+    );
   }
 }

@@ -61,4 +61,10 @@ export class FeaturesService {
 
     return updatedFeature;
   }
+
+  async deleteFeature(id: number) {
+    await this.prismaService.package.delete({
+      where: { id },
+    });
+  }
 }

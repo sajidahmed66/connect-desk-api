@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -34,5 +35,10 @@ export class FeaturesController {
     @Body() body: UpdateFeatureDto,
   ) {
     return this.featuresService.updateFeature(id, body);
+  }
+
+  @Delete(':id')
+  async deleteFeature(@Param('id', ParseIntPipe) id: number) {
+    return await this.featuresService.deleteFeature(id);
   }
 }

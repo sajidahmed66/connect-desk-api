@@ -7,6 +7,11 @@ interface CreateFeatureParams {
   cost: number;
   featues: string[];
 }
+interface UpdateFeatureParams {
+  name?: string;
+  cost?: number;
+  featues?: string[];
+}
 
 @Injectable()
 export class FeaturesService {
@@ -38,5 +43,22 @@ export class FeaturesService {
     });
 
     return new FeaturesResponseDto(newFeature);
+  }
+
+  async updateFeature(id: number, data: UpdateFeatureParams) {
+    const feature = this.prismaService.package.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!feature) {
+      throw new NotFoundException();
+    }
+    const updatedFeature = await this.prismaService.package.update({
+      where: { id },
+      data,
+    });
+
+    return updatedFeature;
   }
 }

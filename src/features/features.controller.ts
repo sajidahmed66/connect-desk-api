@@ -1,6 +1,18 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { FeaturesService } from './features.service';
-import { CreateFeatureDto, FeaturesResponseDto } from './dtos/features.dto';
+import {
+  CreateFeatureDto,
+  FeaturesResponseDto,
+  UpdateFeatureDto,
+} from './dtos/features.dto';
 
 @Controller('features')
 export class FeaturesController {
@@ -14,5 +26,13 @@ export class FeaturesController {
   @Post('')
   createFeature(@Body() body: CreateFeatureDto) {
     return this.featuresService.createFeature(body);
+  }
+
+  @Put(':id')
+  async updateFeature(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateFeatureDto,
+  ) {
+    return this.featuresService.updateFeature(id, body);
   }
 }

@@ -5,6 +5,7 @@ import {
   IsPositive,
   IsNumber,
   IsArray,
+  IsOptional,
 } from 'class-validator';
 
 export class FeaturesResponseDto {
@@ -34,4 +35,19 @@ export class CreateFeatureDto {
   @IsNumber()
   @IsPositive()
   cost: number;
+}
+export class UpdateFeatureDto {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  name?: string;
+
+  @IsOptional()
+  @IsArray()
+  featues?: string[];
+
+  @IsOptional()
+  @IsNumber()
+  @IsPositive()
+  cost?: number;
 }

@@ -14,7 +14,6 @@ import {
   FeaturesResponseDto,
   UpdateFeatureDto,
 } from './dtos/features.dto';
-import { User } from 'src/user/decorators/user.decorator';
 
 @Controller('features')
 export class FeaturesController {
@@ -26,9 +25,8 @@ export class FeaturesController {
   }
 
   @Post('')
-  createFeature(@Body() body: CreateFeatureDto, @User() user) {
-    return user;
-    // return this.featuresService.createFeature(body);
+  createFeature(@Body() body: CreateFeatureDto) {
+    return this.featuresService.createFeature(body);
   }
 
   @Put(':id')

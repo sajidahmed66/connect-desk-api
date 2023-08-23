@@ -8,7 +8,7 @@ import {
   IsOptional,
 } from 'class-validator';
 
-export class FeaturesResponseDto {
+export class PackageResponseDto {
   id: number;
   name: string;
   features: string[];
@@ -19,12 +19,12 @@ export class FeaturesResponseDto {
   @Exclude()
   updated_at: Date;
 
-  constructor(partial: Partial<FeaturesResponseDto>) {
+  constructor(partial: Partial<PackageResponseDto>) {
     Object.assign(this, partial);
   }
 }
 
-export class CreateFeatureDto {
+export class CreatePackageDto {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -36,7 +36,7 @@ export class CreateFeatureDto {
   @IsPositive()
   cost: number;
 }
-export class UpdateFeatureDto {
+export class UpdatePackageDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()

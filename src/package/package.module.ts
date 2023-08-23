@@ -1,18 +1,18 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { FeaturesController } from './features.controller';
-import { FeaturesService } from './features.service';
+import { PackageController } from './package.controller';
+import { PackageService } from './package.service';
 import { PrismaModule } from 'src/prisma/prisma.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [FeaturesController],
+  controllers: [PackageController],
   providers: [
-    FeaturesService,
+    PackageService,
     {
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
     },
   ],
 })
-export class FeaturesModule {}
+export class PackageModule {}

@@ -12,10 +12,10 @@ datasource db {
 model Package {
   id         Int      @id @default(autoincrement())
   name       String
-  features   String[]
   cost       Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  features   String[]
 }
 
 model Faq {

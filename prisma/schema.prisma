@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js" 
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -9,20 +9,13 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum UserType {
-  ADMIN
-  ClIENT
-  BUSIINESS
-}
-
-
 model Package {
   id         Int      @id @default(autoincrement())
   name       String
-  featues    String[]
   cost       Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  features   String[]
 }
 
 model Faq {
@@ -37,10 +30,10 @@ model User {
   id         Int      @id @default(autoincrement())
   name       String
   email      String   @unique
-  password   String
   user_type  UserType
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  password   String
 }
 
 model Blog {
@@ -89,26 +82,31 @@ model Product {
   image          String
   features       String
   subcategory_id Int
-  subcategory    SubCategory @relation(fields: [subcategory_id], references: [id])
   created_at     DateTime    @default(now())
   updated_at     DateTime    @default(now())
+  subcategory    SubCategory @relation(fields: [subcategory_id], references: [id])
 }
 
 model Category {
   id          Int           @id @default(autoincrement())
   name        String
-  subcategory SubCategory[]
   created_at  DateTime      @default(now())
   updated_at  DateTime      @default(now())
+  subcategory SubCategory[]
 }
 
 model SubCategory {
   id          Int       @id @default(autoincrement())
   name        String
-  products    Product[]
   category_id Int
-  category    Category  @relation(fields: [category_id], references: [id])
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
+  products    Product[]
+  category    Category  @relation(fields: [category_id], references: [id])
 }
 
+enum UserType {
+  ADMIN
+  ClIENT
+  BUSIINESS
+}

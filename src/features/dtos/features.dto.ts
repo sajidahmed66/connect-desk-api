@@ -11,7 +11,7 @@ import {
 export class FeaturesResponseDto {
   id: number;
   name: string;
-  featues: string[];
+  features: string[];
   cost: number;
 
   @Exclude()
@@ -30,7 +30,7 @@ export class CreateFeatureDto {
   name: string;
 
   @IsArray()
-  featues: string[];
+  features: string[];
 
   @IsNumber()
   @IsPositive()
@@ -44,7 +44,7 @@ export class UpdateFeatureDto {
 
   @IsOptional()
   @IsArray()
-  featues?: string[];
+  features?: string[];
 
   @IsOptional()
   @IsNumber()

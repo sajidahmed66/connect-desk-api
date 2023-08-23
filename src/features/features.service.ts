@@ -1,16 +1,16 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { FeaturesResponseDto } from './dtos/features.dto';
 
 interface CreateFeatureParams {
   name: string;
   cost: number;
-  featues: string[];
+  features: string[];
 }
 interface UpdateFeatureParams {
   name?: string;
   cost?: number;
-  featues?: string[];
+  features?: string[];
 }
 
 @Injectable()
@@ -23,7 +23,7 @@ export class FeaturesService {
         id: true,
         name: true,
         cost: true,
-        featues: true,
+        features: true,
       },
     });
     if (!features.length) {
@@ -33,12 +33,12 @@ export class FeaturesService {
     return features.map((feature) => new FeaturesResponseDto(feature));
   }
 
-  async createFeature({ name, cost, featues }: CreateFeatureParams) {
+  async createFeature({ name, cost, features }: CreateFeatureParams) {
     const newFeature = await this.prismaService.package.create({
       data: {
         name,
         cost,
-        featues,
+        features
       },
     });
 
@@ -63,8 +63,13 @@ export class FeaturesService {
   }
 
   async deleteFeature(id: number) {
-    await this.prismaService.package.delete({
-      where: { id },
-    });
+    try {
+      await this.prismaService.package.delete({
+        where: { id },
+      });  
+    } catch (error) {
+      return new HttpException("not found", 400)
+    }
+    
   }
 }

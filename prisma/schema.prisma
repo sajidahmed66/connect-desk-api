@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client-js" 
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
@@ -7,6 +8,13 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+enum UserType {
+  ADMIN
+  ClIENT
+  BUSIINESS
+}
+
 
 model Package {
   id         Int      @id @default(autoincrement())
@@ -104,8 +112,3 @@ model SubCategory {
   updated_at  DateTime  @default(now())
 }
 
-enum UserType {
-  ADMIN
-  ClIENT
-  BUSIINESS
-}

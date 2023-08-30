@@ -16,7 +16,9 @@ export class FaqService {
 
   async findAllFaq(): Promise<FaqResponseDto[]> {
     const faqs = await this.prismaService.faq.findMany();
-
+    if (!faqs.length) {
+      throw new HttpException('no faqs found', 400);
+    }
     return faqs.map((faq) => new FaqResponseDto(faq));
   }
 

@@ -8,9 +8,10 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { UserInterceptor } from './user/interceptors/user.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 import { FaqModule } from './faq/faq.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
-  imports: [UserModule, PrismaModule, PackageModule, FaqModule], // modules goes here
+  imports: [UserModule, PrismaModule, PackageModule, FaqModule, CategoryModule], // modules goes here
   controllers: [AppController], // controller goes to controller
   providers: [
     AppService,

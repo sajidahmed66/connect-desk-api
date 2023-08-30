@@ -9,9 +9,11 @@ import { UserInterceptor } from './user/interceptors/user.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 import { FaqModule } from './faq/faq.module';
 import { CategoryModule } from './category/category.module';
+import { SubcategoryModule } from './subcategory/subcategory.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
-  imports: [UserModule, PrismaModule, PackageModule, FaqModule, CategoryModule], // modules goes here
+  imports: [UserModule, PrismaModule, PackageModule, FaqModule, CategoryModule, SubcategoryModule, ProductModule], // modules goes here
   controllers: [AppController], // controller goes to controller
   providers: [
     AppService,

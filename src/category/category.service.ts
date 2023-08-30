@@ -9,7 +9,11 @@ export class CategoryService {
     try {
       return this.prismaService.category.findMany({
         include: {
-          subcategory: true,
+          subcategory: {
+            include: {
+              products: true,
+            },
+          },
         },
       });
     } catch (error) {

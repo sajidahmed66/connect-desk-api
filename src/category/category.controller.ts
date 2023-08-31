@@ -11,7 +11,7 @@ import {
 import { Roles } from 'src/decorators/roles.decorator';
 import { UserType } from '@prisma/client';
 import { CategoryService } from './category.service';
-import { CreateCategoryDto } from './dto/category.dto';
+import { CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
 
 @Controller('category')
 export class CategoryController {
@@ -25,5 +25,19 @@ export class CategoryController {
   @Post('')
   createCategory(@Body() body: CreateCategoryDto) {
     return this.categoryService.createCategory(body);
+  }
+  @Roles(UserType.ADMIN)
+  @Put('/:id')
+  updateCategory(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() body: UpdateCategoryDto,
+  ) {
+    return this.categoryService.updateCategory(id, body);
+  }
+
+  @Roles(UserType.ADMIN)
+  @Delete('/:id')
+  deleteCategory(@Param('id', ParseIntPipe) id: number) {
+    return this.categoryService.deleteCategory(id);
   }
 }

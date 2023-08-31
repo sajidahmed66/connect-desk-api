@@ -48,7 +48,7 @@ export class CategoryService {
     }
   }
 
-  async createCategory(data: CreateCategoryDto) {
+  async createCategory(data: CreateCategoryDto): Promise<CategoryResponseDto> {
     try {
       const newCategory = await this.prismaService.category.create({
         data,
@@ -79,7 +79,15 @@ export class CategoryService {
     }
   }
 
-  async deleteCategory() {
-    return [];
+  async deleteCategory(id: number) {
+    try {
+      await this.prismaService.category.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      throw new HttpException(`some thing went wrong ${error}`, 400);
+    }
   }
 }

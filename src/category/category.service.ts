@@ -1,13 +1,18 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CategoryResponseDto, CreateCategoryDto } from './dto/category.dto';
+import {
+  CategoryResponseDto,
+  CreateCategoryDto,
+  UpdateCategoryDto,
+} from './dto/category.dto';
 
 @Injectable()
 export class CategoryService {
   constructor(private readonly prismaService: PrismaService) {}
-  getAllCategories() {
+
+  async getAllCategories(): Promise<CategoryResponseDto[]> {
     try {
-      return this.prismaService.category.findMany({
+      const allCategory = await this.prismaService.category.findMany({
         include: {
           subcategory: {
             include: {
@@ -16,17 +21,31 @@ export class CategoryService {
           },
         },
       });
+
+      return allCategory.map((cat) => new CategoryResponseDto(cat));
     } catch (error) {
       return [];
     }
   }
 
-  getCategoryById(id: number) {
-    return this.prismaService.category.findUnique({
-      where: {
-        id,
-      },
-    });
+  async getCategoryById(id: number): Promise<CategoryResponseDto> {
+    try {
+      const selectedCategory = await this.prismaService.category.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          subcategory: {
+            include: {
+              products: true,
+            },
+          },
+        },
+      });
+      return new CategoryResponseDto(selectedCategory);
+    } catch (error) {
+      new HttpException('category not found', 400);
+    }
   }
 
   async createCategory(data: CreateCategoryDto) {
@@ -37,11 +56,30 @@ export class CategoryService {
       return new CategoryResponseDto(newCategory);
     } catch (error) {
       console.log(error);
-      return new HttpException('unable to create category', 400);
+      new HttpException('unable to create category', 400);
     }
   }
 
-  updateCategory() {}
+  async updateCategory(
+    id: number,
+    data: UpdateCategoryDto,
+  ): Promise<CategoryResponseDto> {
+    try {
+      const updatedCategory = await this.prismaService.category.update({
+        where: {
+          id: id,
+        },
+        data: {
+          ...data,
+        },
+      });
+      return new CategoryResponseDto(updatedCategory);
+    } catch (error) {
+      throw new NotFoundException();
+    }
+  }
 
-  deleteCategory() {}
+  async deleteCategory() {
+    return [];
+  }
 }

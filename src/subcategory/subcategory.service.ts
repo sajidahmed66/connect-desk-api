@@ -1,29 +1,46 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import {
   CreateSubCategoryDto,
+  SubCategoryResponseDto,
   UpdateSubCategoryDto,
 } from './dto/subcategory.dto';
 
 @Injectable()
 export class SubcategoryService {
   constructor(private readonly prismaService: PrismaService) {}
-  async getSubcategories() {
+
+  async getSubcategories(): Promise<SubCategoryResponseDto[]> {
     try {
       const subcategories = await this.prismaService.subCategory.findMany({
         include: {
           products: true,
         },
       });
-      return subcategories;
+      return subcategories.map((item) => new SubCategoryResponseDto(item));
     } catch (error) {
-      return [];
+      throw new HttpException('unable to get subcategories', 400);
     }
   }
-  getSubcategoryById(id: number) {
-    return [];
+  async getSubcategoryById(id: number): Promise<SubCategoryResponseDto> {
+    try {
+      const selectedCategory = await this.prismaService.subCategory.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          products: true,
+        },
+      });
+      return new SubCategoryResponseDto(selectedCategory);
+    } catch (error) {
+      throw new HttpException('subcategory not found', 400);
+    }
   }
-  async createSubcategory(data: CreateSubCategoryDto) {
+
+  async createSubcategory(
+    data: CreateSubCategoryDto,
+  ): Promise<SubCategoryResponseDto> {
     try {
       const newSubCategory = await this.prismaService.subCategory.create({
         data: {
@@ -32,13 +49,38 @@ export class SubcategoryService {
           category_id: data.categoryId,
         },
       });
-      return newSubCategory;
+      return new SubCategoryResponseDto(newSubCategory);
     } catch (error) {}
   }
-  updateSubcategory(id: number, data: UpdateSubCategoryDto) {
-    return [];
+
+  async updateSubcategory(
+    id: number,
+    data: UpdateSubCategoryDto,
+  ): Promise<SubCategoryResponseDto> {
+    try {
+      const updatedSubCategory = await this.prismaService.subCategory.update({
+        where: {
+          id: id,
+        },
+        data: {
+          ...data,
+        },
+      });
+      return new SubCategoryResponseDto(updatedSubCategory);
+    } catch (error) {
+      throw new HttpException('unable to update subcategory', 400);
+    }
   }
-  deleteSubcategory(id: number) {
-    return [];
+
+  async deleteSubcategory(id: number): Promise<void> {
+    try {
+      await this.prismaService.subCategory.delete({
+        where: {
+          id,
+        },
+      });
+    } catch (error) {
+      throw new HttpException('unable to delete subcategory', 400);
+    }
   }
 }

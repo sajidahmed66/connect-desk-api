@@ -37,10 +37,12 @@ export class SubcategoryController {
     @Param('id', ParseIntPipe) id: number,
     @Body() body: UpdateSubCategoryDto,
   ) {
-    return this, this.subcategoryService.updateSubcategory(id, body);
+    return this.subcategoryService.updateSubcategory(id, body);
   }
 
   @Roles(UserType.ADMIN)
   @Delete(':id')
-  deleteSubcategory(@Param('id', ParseIntPipe) id: number) {}
+  deleteSubcategory(@Param('id', ParseIntPipe) id: number) {
+    return this.subcategoryService.deleteSubcategory(id);
+  }
 }

@@ -1,5 +1,5 @@
 import { Exclude, Expose } from 'class-transformer';
-import { IsNotEmpty, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class SiteUseTutorialResponseDto {
   id: number;
@@ -30,4 +30,15 @@ export class CreateSiteUseTutorialDto {
 
   @IsUrl()
   videoLink: string;
+}
+
+export class UpdateSiteUseTutorialsDto {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  title?: string;
+
+  @IsOptional()
+  @IsUrl()
+  videoLink?: string;
 }

@@ -8,6 +8,12 @@ interface CreateFounderMessageParams {
   body: string;
 }
 
+interface UpdateFounderMessageParams {
+  name?: string;
+  designation?: string;
+  body?: string;
+}
+
 @Injectable()
 export class FounderMessageService {
   constructor(private readonly prismaService: PrismaService) {}
@@ -43,5 +49,22 @@ export class FounderMessageService {
     });
 
     return founderMessage;
+  }
+
+  async updateFounderMessage(id: number, data: UpdateFounderMessageParams) {
+    const message = await this.prismaService.messageFromFounder.findUnique({
+      where: { id },
+    });
+
+    if (!message) {
+      throw new NotFoundException();
+    }
+
+    const newMessage = await this.prismaService.messageFromFounder.update({
+      where: { id },
+      data,
+    });
+
+    return new FounderMessageResponseDto(newMessage);
   }
 }

@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class FounderMessageResponseDto {
   id: number;
@@ -27,4 +27,18 @@ export class CreateFounderMessageDto {
   @IsString()
   @IsNotEmpty()
   body: string;
+}
+export class UpdateFounderMessageDto {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  name?: string;
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  designation?: string;
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  body?: string;
 }

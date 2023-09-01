@@ -4,7 +4,6 @@ import {
   IsNotEmpty,
   IsPositive,
   IsNumber,
-  IsArray,
   IsOptional,
 } from 'class-validator';
 
@@ -39,4 +38,22 @@ export class UpdateProductDto {
   @IsOptional()
   subcategoryId?: number;
 }
-export class ProductResponseDto {}
+export class ProductResponseDto {
+  id: number;
+  title: string;
+  features: string;
+  image: string;
+  @Exclude()
+  subcategoryId: number;
+  @Expose({ name: 'subcategoryId' })
+  subcategory() {
+    return this.subcategoryId;
+  }
+  @Exclude()
+  created_at: Date;
+  @Exclude()
+  updated_at: Date;
+  constructor(partial: Partial<ProductResponseDto>) {
+    Object.assign(this, partial);
+  }
+}

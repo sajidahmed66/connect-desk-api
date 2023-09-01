@@ -81,10 +81,10 @@ model Product {
   title          String
   image          String
   features       String
-  subcategory_id Int
+  subcategory_id Int?
   created_at     DateTime    @default(now())
   updated_at     DateTime    @default(now())
-  subcategory    SubCategory @relation(fields: [subcategory_id], references: [id])
+  subcategory    SubCategory? @relation(fields: [subcategory_id], references: [id])
 }
 
 model Category {

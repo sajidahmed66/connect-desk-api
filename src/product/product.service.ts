@@ -1,28 +1,32 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
+import {
+  CreateProductDto,
+  ProductResponseDto,
+  UpdateProductDto,
+} from './dto/product.dto';
 
 @Injectable()
 export class ProductService {
   constructor(private readonly prismaService: PrismaService) {}
-  async getAlProducts() {
+  async getAlProducts(): Promise<ProductResponseDto[]> {
     try {
       const allProducts = await this.prismaService.product.findMany();
-      return allProducts;
+      return allProducts.map((p) => new ProductResponseDto(p));
     } catch (error) {
       throw new HttpException('unable to get products', 400);
     }
   }
-  async getProductById(id: number) {
+  async getProductById(id: number): Promise<ProductResponseDto> {
     try {
       const selectedProduct = await this.prismaService.product.findUnique({
         where: {
           id,
         },
       });
-      return selectedProduct;
+      return new ProductResponseDto(selectedProduct);
     } catch (error) {
-      throw new HttpException('unable to get product', 400);
+      // throw new HttpException('unable to get product', 400);
     }
   }
   async getImageOfProduct(id: number) {
@@ -48,7 +52,7 @@ export class ProductService {
   // yet to do with multer and cloudinary
   async updateImageOfProduct(id: number, data: UpdateProductDto) {}
 
-  async createProduct(data: CreateProductDto) {
+  async createProduct(data: CreateProductDto): Promise<ProductResponseDto> {
     try {
       const createdProduct = await this.prismaService.product.create({
         data: {
@@ -58,25 +62,31 @@ export class ProductService {
           subcategory_id: data.subcategoryId,
         },
       });
-      return createdProduct;
+      return new ProductResponseDto(createdProduct);
     } catch (error) {
-      throw new HttpException('unable to create product', 400);
+      throw new HttpException(`unable to create product ${error}`, 400);
     }
   }
 
-  async updateProduct(id: number, data: UpdateProductDto) {
+  async updateProduct(
+    id: number,
+    { title, features, image, subcategoryId }: UpdateProductDto,
+  ) {
     try {
       const updatedProduct = await this.prismaService.product.update({
         where: {
           id,
         },
         data: {
-          ...data,
+          title,
+          features,
+          image,
+          subcategory_id: subcategoryId,
         },
       });
       return updatedProduct;
     } catch (error) {
-      throw new HttpException('unable to update product', 400);
+      throw new HttpException(`unable to update product ${error}`, 400);
     }
   }
 
@@ -87,7 +97,8 @@ export class ProductService {
           id,
         },
       });
-    } catch (error) {}
-    throw new HttpException('unable to delete product', 400);
+    } catch (error) {
+      throw new HttpException('unable to delete product', 400);
+    }
   }
 }

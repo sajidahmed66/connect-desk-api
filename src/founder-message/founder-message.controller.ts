@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -38,5 +39,11 @@ export class FounderMessageController {
     @Body() body: UpdateFounderMessageDto,
   ) {
     return await this.founderMessageService.updateFounderMessage(id, body);
+  }
+
+  @Roles(UserType.ADMIN)
+  @Delete(':id')
+  async deleteFounderMessage(@Param('id', ParseIntPipe) id: number) {
+    return await this.founderMessageService.deleteFounderMessage(id);
   }
 }

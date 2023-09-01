@@ -67,4 +67,14 @@ export class FounderMessageService {
 
     return new FounderMessageResponseDto(newMessage);
   }
+
+  async deleteFounderMessage(id: number) {
+    try {
+      await this.prismaService.messageFromFounder.delete({
+        where: { id },
+      });
+    } catch {
+      throw new NotFoundException();
+    }
+  }
 }

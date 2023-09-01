@@ -6,6 +6,10 @@ interface CreateSiteUseTutorialParams {
   title: string;
   videoLink: string;
 }
+interface UpdateSiteUseTutorialParams {
+  title?: string;
+  videoLink?: string;
+}
 
 @Injectable()
 export class SiteUseTutorialService {
@@ -41,5 +45,27 @@ export class SiteUseTutorialService {
     });
 
     return new SiteUseTutorialResponseDto(newTutorialLink);
+  }
+
+  async updateSiteUseTutorial(id: number, data: UpdateSiteUseTutorialParams) {
+    const tutorial = await this.prismaService.siteUseTutorial.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!tutorial) {
+      throw new NotFoundException();
+    }
+
+    const updatedTutorial = await this.prismaService.siteUseTutorial.update({
+      where: { id },
+      data: {
+        title: data.title,
+        video_link: data.videoLink,
+      },
+    });
+
+    return new SiteUseTutorialResponseDto(updatedTutorial);
   }
 }

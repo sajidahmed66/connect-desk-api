@@ -1,9 +1,10 @@
 version: '3.8'
 services:
   nest-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: zrax/hanif-be:v1
     container_name: nest-api 
     restart: always
     ports:

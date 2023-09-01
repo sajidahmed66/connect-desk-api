@@ -18,21 +18,28 @@ interface UpdateFounderMessageParams {
 export class FounderMessageService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getFounderMessage(): Promise<FounderMessageResponseDto> {
-    const founderMessage =
-      await this.prismaService.messageFromFounder.findFirst({
+  async getFounderMessage(): Promise<FounderMessageResponseDto[]> {
+    const founderMessage = await this.prismaService.messageFromFounder.findMany(
+      {
+        orderBy: {
+          id: 'desc',
+        },
         select: {
           name: true,
           designation: true,
           body: true,
         },
-      });
+        take: 1,
+      },
+    );
 
     if (!founderMessage) {
       throw new NotFoundException();
     }
 
-    return new FounderMessageResponseDto(founderMessage);
+    return founderMessage.map(
+      (message) => new FounderMessageResponseDto(message),
+    );
   }
 
   async createFounderMessage({

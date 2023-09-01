@@ -11,6 +11,9 @@ import { FaqModule } from './faq/faq.module';
 import { ContactUsModule } from './contact-us/contact-us.module';
 import { FounderMessageModule } from './founder-message/founder-message.module';
 import { SiteUseTutorialModule } from './site-use-tutorial/site-use-tutorial.module';
+import { CategoryModule } from './category/category.module';
+import { SubcategoryModule } from './subcategory/subcategory.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import { SiteUseTutorialModule } from './site-use-tutorial/site-use-tutorial.mod
     ContactUsModule,
     FounderMessageModule,
     SiteUseTutorialModule,
+    CategoryModule,
+    SubcategoryModule,
+    ProductModule,
   ], // modules goes here
   controllers: [AppController], // controller goes to controller
   providers: [

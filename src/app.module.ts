@@ -9,6 +9,7 @@ import { UserInterceptor } from './user/interceptors/user.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 import { FaqModule } from './faq/faq.module';
 import { ContactUsModule } from './contact-us/contact-us.module';
+import { FounderMessageModule } from './founder-message/founder-message.module';
 import { SiteUseTutorialModule } from './site-use-tutorial/site-use-tutorial.module';
 
 @Module({
@@ -18,6 +19,7 @@ import { SiteUseTutorialModule } from './site-use-tutorial/site-use-tutorial.mod
     PackageModule,
     FaqModule,
     ContactUsModule,
+    FounderMessageModule,
     SiteUseTutorialModule,
   ], // modules goes here
   controllers: [AppController], // controller goes to controller

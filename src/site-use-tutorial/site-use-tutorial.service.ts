@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { SiteUseTutorialResponseDto } from './dtos/site-use-tutorial.dto';
 
 interface CreateSiteUseTutorialParams {
   title: string;
@@ -9,6 +10,24 @@ interface CreateSiteUseTutorialParams {
 @Injectable()
 export class SiteUseTutorialService {
   constructor(private readonly prismaService: PrismaService) {}
+
+  async getSiteUseTutorials(): Promise<SiteUseTutorialResponseDto[]> {
+    const tutorials = await this.prismaService.siteUseTutorial.findMany({
+      select: {
+        id: true,
+        title: true,
+        video_link: true,
+      },
+    });
+
+    if (!tutorials.length) {
+      throw new NotFoundException();
+    }
+
+    return tutorials.map(
+      (tutorial) => new SiteUseTutorialResponseDto(tutorial),
+    );
+  }
 
   async createSiteUseTutorial({
     title,
@@ -21,6 +40,6 @@ export class SiteUseTutorialService {
       },
     });
 
-    return newTutorialLink;
+    return new SiteUseTutorialResponseDto(newTutorialLink);
   }
 }

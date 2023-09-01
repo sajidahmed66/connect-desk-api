@@ -50,12 +50,14 @@ export class SubcategoryService {
         },
       });
       return new SubCategoryResponseDto(newSubCategory);
-    } catch (error) {}
+    } catch (error) {
+      throw new HttpException('unable to create subcategory', 400);
+    }
   }
 
   async updateSubcategory(
     id: number,
-    data: UpdateSubCategoryDto,
+    { name, categoryId }: UpdateSubCategoryDto,
   ): Promise<SubCategoryResponseDto> {
     try {
       const updatedSubCategory = await this.prismaService.subCategory.update({
@@ -63,7 +65,8 @@ export class SubcategoryService {
           id: id,
         },
         data: {
-          ...data,
+          name,
+          category_id: categoryId,
         },
       });
       return new SubCategoryResponseDto(updatedSubCategory);

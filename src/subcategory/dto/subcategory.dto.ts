@@ -20,10 +20,12 @@ export class CreateSubCategoryDto {
 }
 
 export class UpdateSubCategoryDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @IsOptional()
   @IsNumber()
   @IsPositive()
   categoryId: number;

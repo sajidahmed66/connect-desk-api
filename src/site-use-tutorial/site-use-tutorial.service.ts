@@ -68,4 +68,16 @@ export class SiteUseTutorialService {
 
     return new SiteUseTutorialResponseDto(updatedTutorial);
   }
+
+  async deleteSiteUseTutorial(id: number) {
+    try {
+      await this.prismaService.siteUseTutorial.delete({
+        where: {
+          id,
+        },
+      });
+    } catch {
+      throw new NotFoundException();
+    }
+  }
 }

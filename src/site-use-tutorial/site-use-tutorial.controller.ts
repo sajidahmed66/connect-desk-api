@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -40,5 +41,11 @@ export class SiteUseTutorialController {
     @Body() body: UpdateSiteUseTutorialDto,
   ) {
     return this.siteUseTutorialService.updateSiteUseTutorial(id, body);
+  }
+
+  @Roles(UserType.ADMIN)
+  @Delete(':id')
+  deleteSiteUseTutorial(@Param('id', ParseIntPipe) id: number) {
+    return this.siteUseTutorialService.deleteSiteUseTutorial(id);
   }
 }

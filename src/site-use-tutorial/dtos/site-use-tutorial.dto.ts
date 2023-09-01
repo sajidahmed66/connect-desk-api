@@ -32,7 +32,7 @@ export class CreateSiteUseTutorialDto {
   videoLink: string;
 }
 
-export class UpdateSiteUseTutorialsDto {
+export class UpdateSiteUseTutorialDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()

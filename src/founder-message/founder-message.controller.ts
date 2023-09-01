@@ -26,7 +26,7 @@ export class FounderMessageController {
     return await this.founderMessageService.getFounderMessage();
   }
 
-  //   @Roles(UserType.ADMIN)
+  @Roles(UserType.ADMIN)
   @Post('')
   async createFounderMessage(@Body() body: CreateFounderMessageDto) {
     return await this.founderMessageService.createFounderMessage(body);
